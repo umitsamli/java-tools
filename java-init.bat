@@ -8,17 +8,17 @@ call :ENSURE_PATH
 if "%~1"=="" goto LIST
 if /i "%~1"=="-create" goto CREATE
 
-echo Kullanim: %~nx0
-echo   %~nx0            bu dizindeki java komutlarini listeler
-echo   %~nx0 -create    Java kurulumlarini tarar ve komutlari yeniden olusturur
+echo Usage: %~nx0
+echo   %~nx0            lists the Java commands in this folder
+echo   %~nx0 -create    scans Java installations and recreates the commands
 exit /b 1
 
 :LIST
-echo Java komutlari: %TOOLS_DIR%
+echo Java commands: %TOOLS_DIR%
 echo.
 set "FOUND=0"
 for /L %%N in (1,1,40) do if exist "%TOOLS_DIR%\java%%N.bat" call :SHOW_ONE "%TOOLS_DIR%\java%%N.bat" %%N
-if "%FOUND%"=="0" echo Komut yok. Olusturmak icin: %~nx0 -create
+if "%FOUND%"=="0" echo No commands yet. Create them with: %~nx0 -create
 exit /b 0
 
 :SHOW_ONE
@@ -38,7 +38,7 @@ if /i "%~1"=="rem EXE" set "TARGET=%~2"
 goto :EOF
 
 :CREATE
-echo Java kurulumlari taraniyor...
+echo Scanning Java installations...
 echo.
 
 if defined JAVA_HOME call :ADD_HOME "%JAVA_HOME%"
@@ -72,9 +72,9 @@ set "COUNT=0"
 for /f "tokens=1,* delims==" %%A in ('set JAVA_VER_ 2^>nul') do call :WRITE_ONE "%%A" "%%B"
 
 if "%COUNT%"=="0" (
-    echo Java kurulumu bulunamadi.
+    echo No Java installation found.
 ) else (
-    echo %COUNT% komut olusturuldu: %TOOLS_DIR%
+    echo %COUNT% commands created: %TOOLS_DIR%
 )
 exit /b 0
 
@@ -138,9 +138,9 @@ if errorlevel 1 goto :EOF
 > "%MARKFILE%" echo %TOOLS_DIR%
 setx JAVA_TOOLS_NOTIFY 1 >nul 2>&1
 reg delete "HKCU\Environment" /v JAVA_TOOLS_NOTIFY /f >nul 2>&1
-echo Klasor kullanici PATH icine eklendi:
+echo Folder added to the user PATH:
 echo   %TOOLS_DIR%
-echo Yeni bir terminal acinca java17 gibi komutlar dogrudan calisir.
+echo Open a new terminal, then commands such as java17 run directly.
 echo.
 goto :EOF
 
@@ -243,7 +243,7 @@ if errorlevel 1 goto :EOF
 :STORE_JAVA
 set "JAVA_VER_%MAJOR%=%RAW_VER%"
 set "JAVA_EXE_%MAJOR%=%EXE_PATH%"
-echo   bulundu: Java %MAJOR% ^(%RAW_VER%^)
+echo   found: Java %MAJOR% ^(%RAW_VER%^)
 echo            %EXE_PATH%
 goto :EOF
 

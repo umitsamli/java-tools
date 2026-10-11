@@ -1,31 +1,31 @@
 # JavaTools
 
-Windows üzerinde kurulu JDK ve JRE sürümlerini tarar. Her ana sürüm için `java17.bat` gibi bir komut üretir. Aynı ana sürümden birden fazla kurulum varsa en yenisi kullanılır.
+Scans JDK and JRE installations on Windows and creates one command per major version, such as `java17.bat`. When several installs share a major version, the newest one is kept.
 
-## Kurulum
+## Setup
 
-`java-init.bat` dosyasını bir klasöre koyun ve bir kez çalıştırın:
+Place `java-init.bat` in a folder and run it once:
 
 ```bat
 java-init.bat
 ```
 
-İlk çalıştırmada bu klasör kullanıcı PATH ortam değişkenine eklenir. Yeni açılan terminallerde `java17` gibi komutlar doğrudan çalışır. Yönetici izni gerekmez. PATH zaten bu klasörü içeriyorsa yeniden yazılmaz.
+The first run adds that folder to the user PATH. New terminals can then run commands such as `java17` directly. Administrator rights are not required. If the folder is already on PATH, the value is left unchanged.
 
-## Kullanim
+## Usage
 
 ```bat
-java-init.bat            bulunan java komutlarini listeler
-java-init.bat -create    kurulumlari tarar ve komutlari yeniden yazar
-java17 -version          olusan komutu calistirir
+java-init.bat            lists the Java commands in this folder
+java-init.bat -create    scans installations and rewrites the commands
+java17 -version          runs a generated command
 ```
 
-`-create` su kaynaklara bakar:
+`-create` looks in:
 
-- `Program Files`, `Program Files (x86)` ve `%LOCALAPPDATA%\Programs` altinda Java kurulum klasorleri
-- `%USERPROFILE%\.jdks`, Scoop ve Chocolatey
-- `JAVA_HOME`, `PATH` ve JDK kayit defteri anahtarlari
+- Java install folders under `Program Files`, `Program Files (x86)`, and `%LOCALAPPDATA%\Programs`
+- `%USERPROFILE%\.jdks`, Scoop, and Chocolatey
+- `JAVA_HOME`, `PATH`, and the JDK registry keys
 
-Surum, mumkunse kurulumdaki `release` dosyasindan okunur. `java.exe` yalnizca bu dosya yoksa calistirilir. Oracle `javapath` ve `latest` kisayollari ile JDK icine gomulu `jre\bin` kopyalari atlanir.
+The version is read from the install's `release` file when that file exists. `java.exe` is started only when it does not. Oracle `javapath` and `latest` shortcuts, and a JDK's bundled `jre\bin` copy, are skipped.
 
-Uretilen dosyalar bu klasorde kalir ve makineye ozel olduklari icin git deposuna eklenmez.
+Generated files stay in this folder. They contain machine-specific paths, so they are not added to the git repository.
